@@ -1,0 +1,207 @@
+use Inventory;
+CREATE TABLE Categories (
+    CategoryId int Not null unique Identity(1,1),
+    CategoryName NVARCHAR(100) PRIMARY KEY NOT NULL ,
+    Description NVARCHAR(255) NULL
+);
+
+CREATE TABLE Products (
+    ProductID INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    SKU NVARCHAR(50) UNIQUE NOT NULL,
+    CategoryName NVARCHAR(100) NULL,
+    Quantity INT DEFAULT 0,
+    UnitPrice DECIMAL(10, 2) NULL,
+    Barcode NVARCHAR(255) NULL,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (CategoryName) REFERENCES Categories(CategoryName) 
+);
+
+CREATE TABLE Suppliers (
+    SupplierID INT IDENTITY(1,1) PRIMARY KEY,  
+    SupplierName NVARCHAR(100) NOT NULL,      
+    ContactName NVARCHAR(100) NULL,           
+    Phone NVARCHAR(15) NULL,                 
+    Email NVARCHAR(100) NULL,               
+    Address NVARCHAR(255) NULL                
+);
+
+CREATE TABLE Users (
+    UserID INT IDENTITY(1,1) PRIMARY KEY,   
+    Username NVARCHAR(50) NOT NULL UNIQUE,    
+    PasswordHash NVARCHAR(255) NOT NULL,       
+    Role NVARCHAR(20) CHECK (Role IN ('Admin', 'Manager', 'Staff', 'Intern')),
+    CreatedAt DATETIME DEFAULT GETDATE()      
+);
+
+
+CREATE TABLE PurchaseOrders (
+    PurchaseOrderID INT IDENTITY(1,1) PRIMARY KEY,
+    SupplierID INT NOT NULL,                    
+    OrderDate DATETIME DEFAULT GETDATE(),       
+    Status NVARCHAR(20) CHECK (Status IN ('Pending', 'Completed', 'Cancelled')),
+    TotalAmount DECIMAL(10, 2),                  
+    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID) 
+);
+
+
+CREATE TABLE PurchaseOrderDetails (
+    PODetailID INT IDENTITY(1,1) PRIMARY KEY,
+    PurchaseOrderID INT NOT NULL,
+    ProductID INT NOT NULL,
+    Quantity INT NOT NULL,
+    UnitPrice DECIMAL(10,2) NOT NULL, 
+    FOREIGN KEY (PurchaseOrderID) REFERENCES PurchaseOrders(PurchaseOrderID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID) 
+);
+
+
+CREATE TABLE SalesOrders (
+    SalesOrderID INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerName NVARCHAR(100) NOT NULL,
+    OrderDate DATETIME DEFAULT GETDATE(),
+    Status NVARCHAR(20) CHECK (Status IN ('Pending', 'Shipped', 'Cancelled')),
+    TotalAmount DECIMAL(10,2) NULL
+);
+
+
+
+
+
+CREATE TABLE SalesOrderDetails (
+    SODetailID INT IDENTITY(1,1) PRIMARY KEY,
+    SalesOrderID INT NOT NULL,
+    ProductID INT NOT NULL,
+    Quantity INT NOT NULL,
+    UnitPrice DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (SalesOrderID) REFERENCES SalesOrders(SalesOrderID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+CREATE TABLE StockMovements (
+    MovementID INT IDENTITY(1,1) PRIMARY KEY,
+    ProductID INT NOT NULL,
+    MovementType NVARCHAR(20) CHECK (MovementType IN ('IN', 'OUT', 'ADJUSTMENT')),
+    Quantity INT NOT NULL,
+    MovementDate DATETIME DEFAULT GETDATE(),
+    Description NVARCHAR(255) NULL,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+CREATE TABLE AuditLogs (
+    LogID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID INT NOT NULL,
+    Action NVARCHAR(100) NOT NULL,
+    TableAffected NVARCHAR(50) NULL,
+    ActionTime DATETIME DEFAULT GETDATE(),
+    Description NVARCHAR(255) NULL,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+
+
+GO
+
+
+
+
+
+
+
+-- some dumpy values taken from internet 
+
+
+
+
+INSERT INTO Categories (CategoryName, Description) VALUES
+('Electronics', 'Electronic items including gadgets, devices, and accessories'),
+('Furniture', 'Home and office furniture'),
+('Clothing', 'Men and women apparel'),
+('Toys', 'Children’s toys and games'),
+('Books', 'Books and educational material');
+
+
+
+
+INSERT INTO Products (Name, SKU, CategoryName, Quantity, UnitPrice, Barcode, CreatedAt, UpdatedAt) VALUES
+('Laptop', 'SKU12345', 'Electronics', 50, 799.99, '123456789012', GETDATE(), GETDATE()),
+('Chair', 'SKU67890', 'Furniture', 100, 49.99, '987654321098', GETDATE(), GETDATE()),
+('Shirt', 'SKU11122', 'Clothing', 200, 19.99, '111223344556', GETDATE(), GETDATE()),
+('Toy Car', 'SKU33445', 'Toys', 150, 9.99, '223344556677', GETDATE(), GETDATE()),
+('Book', 'SKU55667', 'Books', 500, 15.99, '334455667788', GETDATE(), GETDATE());
+
+
+INSERT INTO Suppliers (SupplierName, ContactName, Phone, Email, Address) VALUES
+('ABC Electronics', 'John Doe', '123-456-7890', 'contact@abc.com', '123 ABC Street'),
+('Furniture Co.', 'Jane Smith', '234-567-8901', 'contact@furniture.com', '456 Furniture Road'),
+('Apparel Ltd.', 'Mark Johnson', '345-678-9012', 'contact@apparel.com', '789 Apparel Lane'),
+('Toy World', 'Emily White', '456-789-0123', 'contact@toyworld.com', '101 Toy Street'),
+('Book House', 'Michael Brown', '567-890-1234', 'contact@bookhouse.com', '202 Book Avenue');
+
+
+
+
+INSERT INTO PurchaseOrders (SupplierID, OrderDate, Status, TotalAmount) VALUES
+(1, GETDATE(), 'Pending', 3999.95),
+(2, GETDATE(), 'Completed', 4999.00),
+(3, GETDATE(), 'Pending', 1999.80),
+(4, GETDATE(), 'Cancelled', 299.95),
+(5, GETDATE(), 'Completed', 799.95);
+
+
+
+
+INSERT INTO PurchaseOrderDetails (PurchaseOrderID, ProductID, Quantity, UnitPrice) VALUES
+(1, 1, 5, 799.99),
+(2, 2, 100, 49.99),
+(3, 3, 150, 19.99),
+(4, 4, 50, 9.99),
+(5, 5, 200, 15.99);
+
+
+
+INSERT INTO SalesOrders (CustomerName, OrderDate, Status, TotalAmount) VALUES
+('Alice Johnson', GETDATE(), 'Pending', 1599.95),
+('Bob Lee', GETDATE(), 'Shipped', 499.95),
+('Charlie Green', GETDATE(), 'Cancelled', 199.95),
+('David White', GETDATE(), 'Pending', 999.95),
+('Eva Brown', GETDATE(), 'Shipped', 1599.95);
+
+
+INSERT INTO SalesOrderDetails (SalesOrderID, ProductID, Quantity, UnitPrice) VALUES
+(1, 1, 2, 799.99),
+(2, 2, 10, 49.99),
+(3, 3, 5, 19.99),
+(4, 4, 15, 9.99),
+(5, 5, 100, 15.99);
+
+
+INSERT INTO StockMovements (ProductID, MovementType, Quantity, MovementDate, Description) VALUES
+(1, 'IN', 10, GETDATE(), 'Restocked 10 laptops'),
+(2, 'OUT', 20, GETDATE(), 'Sold 20 chairs'),
+(3, 'IN', 50, GETDATE(), 'Restocked 50 shirts'),
+(4, 'OUT', 30, GETDATE(), 'Sold 30 toy cars'),
+(5, 'IN', 100, GETDATE(), 'Restocked 100 books');
+
+
+INSERT INTO Users (Username, PasswordHash, Role, CreatedAt) VALUES
+('admin', '$argon2id$v=19$m=65536,t=3,p=4$s4eyUBeawSsGuCjOCs47OQ$scnOFCYQaUnBErSU0M4s7gSKJvR/7VAVrfSlv1wogyc', 'Admin', GETDATE());
+
+
+INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description) VALUES
+(1, 'Insert', 'Products', GETDATE(), 'Inserted new products into the system'),
+(1, 'Update', 'PurchaseOrders', GETDATE(), 'Updated purchase order status'),
+(1, 'Delete', 'SalesOrders', GETDATE(), 'Cancelled a sales order'),
+(1, 'Select', 'StockMovements', GETDATE(), 'Viewed stock movements'),
+(1, 'Update', 'AuditLogs', GETDATE(), 'Updated audit log entry');
+
+
+
+
+
+GO;
+
+
+
+
