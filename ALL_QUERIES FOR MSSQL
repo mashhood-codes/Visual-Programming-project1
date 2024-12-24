@@ -35,7 +35,6 @@ CREATE TABLE Users (
     CreatedAt DATETIME DEFAULT GETDATE()      
 );
 
-
 CREATE TABLE PurchaseOrders (
     PurchaseOrderID INT IDENTITY(1,1) PRIMARY KEY,
     SupplierID INT NOT NULL,                    
@@ -44,7 +43,6 @@ CREATE TABLE PurchaseOrders (
     TotalAmount DECIMAL(10, 2),                  
     FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID) 
 );
-
 
 CREATE TABLE PurchaseOrderDetails (
     PODetailID INT IDENTITY(1,1) PRIMARY KEY,
@@ -56,7 +54,6 @@ CREATE TABLE PurchaseOrderDetails (
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID) 
 );
 
-
 CREATE TABLE SalesOrders (
     SalesOrderID INT IDENTITY(1,1) PRIMARY KEY,
     CustomerName NVARCHAR(100) NOT NULL,
@@ -64,10 +61,6 @@ CREATE TABLE SalesOrders (
     Status NVARCHAR(20) CHECK (Status IN ('Pending', 'Shipped', 'Cancelled')),
     TotalAmount DECIMAL(10,2) NULL
 );
-
-
-
-
 
 CREATE TABLE SalesOrderDetails (
     SODetailID INT IDENTITY(1,1) PRIMARY KEY,
@@ -99,20 +92,7 @@ CREATE TABLE AuditLogs (
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
-
-
 GO
-
-
-
-
-
-
-
--- some dumpy values taken from internet 
-
-
-
 
 INSERT INTO Categories (CategoryName, Description) VALUES
 ('Electronics', 'Electronic items including gadgets, devices, and accessories'),
@@ -121,16 +101,12 @@ INSERT INTO Categories (CategoryName, Description) VALUES
 ('Toys', 'Children’s toys and games'),
 ('Books', 'Books and educational material');
 
-
-
-
 INSERT INTO Products (Name, SKU, CategoryName, Quantity, UnitPrice, Barcode, CreatedAt, UpdatedAt) VALUES
 ('Laptop', 'SKU12345', 'Electronics', 50, 799.99, '123456789012', GETDATE(), GETDATE()),
 ('Chair', 'SKU67890', 'Furniture', 100, 49.99, '987654321098', GETDATE(), GETDATE()),
 ('Shirt', 'SKU11122', 'Clothing', 200, 19.99, '111223344556', GETDATE(), GETDATE()),
 ('Toy Car', 'SKU33445', 'Toys', 150, 9.99, '223344556677', GETDATE(), GETDATE()),
 ('Book', 'SKU55667', 'Books', 500, 15.99, '334455667788', GETDATE(), GETDATE());
-
 
 INSERT INTO Suppliers (SupplierName, ContactName, Phone, Email, Address) VALUES
 ('ABC Electronics', 'John Doe', '123-456-7890', 'contact@abc.com', '123 ABC Street'),
@@ -139,18 +115,12 @@ INSERT INTO Suppliers (SupplierName, ContactName, Phone, Email, Address) VALUES
 ('Toy World', 'Emily White', '456-789-0123', 'contact@toyworld.com', '101 Toy Street'),
 ('Book House', 'Michael Brown', '567-890-1234', 'contact@bookhouse.com', '202 Book Avenue');
 
-
-
-
 INSERT INTO PurchaseOrders (SupplierID, OrderDate, Status, TotalAmount) VALUES
 (1, GETDATE(), 'Pending', 3999.95),
 (2, GETDATE(), 'Completed', 4999.00),
 (3, GETDATE(), 'Pending', 1999.80),
 (4, GETDATE(), 'Cancelled', 299.95),
 (5, GETDATE(), 'Completed', 799.95);
-
-
-
 
 INSERT INTO PurchaseOrderDetails (PurchaseOrderID, ProductID, Quantity, UnitPrice) VALUES
 (1, 1, 5, 799.99),
@@ -159,15 +129,12 @@ INSERT INTO PurchaseOrderDetails (PurchaseOrderID, ProductID, Quantity, UnitPric
 (4, 4, 50, 9.99),
 (5, 5, 200, 15.99);
 
-
-
 INSERT INTO SalesOrders (CustomerName, OrderDate, Status, TotalAmount) VALUES
 ('Alice Johnson', GETDATE(), 'Pending', 1599.95),
 ('Bob Lee', GETDATE(), 'Shipped', 499.95),
 ('Charlie Green', GETDATE(), 'Cancelled', 199.95),
 ('David White', GETDATE(), 'Pending', 999.95),
 ('Eva Brown', GETDATE(), 'Shipped', 1599.95);
-
 
 INSERT INTO SalesOrderDetails (SalesOrderID, ProductID, Quantity, UnitPrice) VALUES
 (1, 1, 2, 799.99),
@@ -176,7 +143,6 @@ INSERT INTO SalesOrderDetails (SalesOrderID, ProductID, Quantity, UnitPrice) VAL
 (4, 4, 15, 9.99),
 (5, 5, 100, 15.99);
 
-
 INSERT INTO StockMovements (ProductID, MovementType, Quantity, MovementDate, Description) VALUES
 (1, 'IN', 10, GETDATE(), 'Restocked 10 laptops'),
 (2, 'OUT', 20, GETDATE(), 'Sold 20 chairs'),
@@ -184,10 +150,8 @@ INSERT INTO StockMovements (ProductID, MovementType, Quantity, MovementDate, Des
 (4, 'OUT', 30, GETDATE(), 'Sold 30 toy cars'),
 (5, 'IN', 100, GETDATE(), 'Restocked 100 books');
 
-
 INSERT INTO Users (Username, PasswordHash, Role, CreatedAt) VALUES
 ('admin', '$argon2id$v=19$m=65536,t=3,p=4$s4eyUBeawSsGuCjOCs47OQ$scnOFCYQaUnBErSU0M4s7gSKJvR/7VAVrfSlv1wogyc', 'Admin', GETDATE());
-
 
 INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description) VALUES
 (1, 'Insert', 'Products', GETDATE(), 'Inserted new products into the system'),
@@ -196,12 +160,518 @@ INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description) V
 (1, 'Select', 'StockMovements', GETDATE(), 'Viewed stock movements'),
 (1, 'Update', 'AuditLogs', GETDATE(), 'Updated audit log entry');
 
+CREATE TABLE DashboardMetrics (
+    MetricID INT IDENTITY(1,1) PRIMARY KEY,
+    TotalStock INT DEFAULT 0,
+    LowStockProducts INT DEFAULT 0,
+    TotalSalesAmount DECIMAL(10, 2) DEFAULT 0,
+    TotalPurchaseAmount DECIMAL(10, 2) DEFAULT 0,
+    LastUpdated DATETIME DEFAULT GETDATE()
+);
 
+UPDATE Products
+SET Name = 'Table' 
+WHERE ProductID = 2;
 
+UPDATE Products
+SET UnitPrice = 899.99 
+WHERE ProductID = 1;
 
+UPDATE SalesOrders
+SET Status = 'Shipped', TotalAmount = 2000.00 
+WHERE SalesOrderID = 1;
+
+INSERT INTO StockMovements (ProductID, MovementType, Quantity, MovementDate, Description)
+VALUES (3, 'IN', 20, GETDATE(), 'Restocked 20 shirts');
+
+INSERT INTO StockMovements (ProductID, MovementType, Quantity, MovementDate, Description)
+VALUES (2, 'OUT', 30, GETDATE(), 'Sold 30 chairs');
+
+UPDATE DashboardMetrics
+SET TotalStock = (SELECT SUM(Quantity) FROM Products),
+    LowStockProducts = (SELECT COUNT(*) FROM Products WHERE Quantity < 10),
+    TotalSalesAmount = (SELECT SUM(TotalAmount) FROM SalesOrders WHERE Status = 'Shipped'),
+    TotalPurchaseAmount = (SELECT SUM(TotalAmount) FROM PurchaseOrders WHERE Status = 'Completed'),
+    LastUpdated = GETDATE()
+WHERE MetricID = 1; 
+
+INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+VALUES (1, 'Update', 'Products', GETDATE(), 'Updated quantity and price of ProductID 1');
+
+UPDATE Categories
+SET CategoryName = 'Tech Gadgets', Description = 'All kinds of tech gadgets'
+WHERE CategoryName = 'Electronics';
+
+SELECT COUNT(*) FROM Products;
+SELECT COUNT(*) FROM SalesOrders WHERE Status = 'Shipped';
+SELECT COUNT(*) FROM Products WHERE Quantity < 10;
+
+DELETE FROM Products WHERE ProductID = 5;
+
+CREATE PROCEDURE DeleteProductWithMovements
+    @ProductID int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    BEGIN TRY
+        BEGIN TRANSACTION
+            DELETE FROM StockMovements WHERE ProductID = @ProductID;
+            DELETE FROM Products WHERE ProductID = @ProductID;
+        COMMIT TRANSACTION
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION
+
+        THROW;
+    END CATCH
+END
+
+EXEC DeleteProductWithMovements @ProductID = 5;
 
 GO;
 
+CREATE OR ALTER PROCEDURE DeleteProductWithMovements
+    @ProductID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @ErrorMessage NVARCHAR(4000);
 
+    BEGIN TRY
+        BEGIN TRANSACTION;
 
+            DELETE FROM PurchaseOrderDetails
+            WHERE ProductID = @ProductID;
 
+            DELETE FROM SalesOrderDetails
+            WHERE ProductID = @ProductID;
+
+            DELETE FROM StockMovements
+            WHERE ProductID = @ProductID;
+
+            DELETE FROM Products
+            WHERE ProductID = @ProductID;
+
+        COMMIT TRANSACTION;
+
+        RETURN 0; 
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+        BEGIN
+            ROLLBACK TRANSACTION;
+        END;
+
+        SET @ErrorMessage = ERROR_MESSAGE();
+        RAISERROR(@ErrorMessage, 16, 1);
+        RETURN -1; 
+    END CATCH;
+END;
+
+use Inventory;
+SELECT 
+    po.PurchaseOrderID, 
+    po.OrderDate, 
+    po.Status, 
+    po.TotalAmount, 
+    s.SupplierName, 
+    s.ContactName, 
+    s.Phone, 
+    s.Email, 
+    s.Address
+FROM 
+    PurchaseOrders po
+INNER JOIN 
+    Suppliers s ON po.SupplierID = s.SupplierID;
+
+CREATE TRIGGER trg_Audit_Suppliers
+ON Suppliers
+AFTER UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @UserID INT;
+    SET @UserID = (SELECT UserID FROM Users WHERE SYSTEM_USER = Username AND Role = 'Admin');
+
+    IF @UserID IS NULL
+    BEGIN
+        RAISERROR ('Only Admin users can perform updates or deletions on Suppliers.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+
+    IF EXISTS (SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'UPDATE',
+            'Suppliers',
+            GETDATE(),
+            CONCAT('Updated SupplierID: ', d.SupplierID)
+        FROM deleted d;
+    END
+
+    IF EXISTS (SELECT * FROM deleted) AND NOT EXISTS (SELECT * FROM inserted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'DELETE',
+            'Suppliers',
+            GETDATE(),
+            CONCAT('Deleted SupplierID: ', d.SupplierID)
+        FROM deleted d;
+    END
+END;
+
+CREATE TRIGGER trg_Audit_Products
+ON Products
+AFTER UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @UserID INT;
+    SET @UserID = (SELECT UserID FROM Users WHERE SYSTEM_USER = Username AND Role = 'Admin');
+
+    IF @UserID IS NULL
+    BEGIN
+        RAISERROR ('Only Admin users can perform updates or deletions on Products.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+
+    IF EXISTS (SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'UPDATE',
+            'Products',
+            GETDATE(),
+            CONCAT('Updated ProductID: ', d.ProductID)
+        FROM deleted d;
+    END
+
+    IF EXISTS (SELECT * FROM deleted) AND NOT EXISTS (SELECT * FROM inserted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'DELETE',
+            'Products',
+            GETDATE(),
+            CONCAT('Deleted ProductID: ', d.ProductID)
+        FROM deleted d;
+    END
+END;
+
+CREATE TRIGGER trg_Audit_SalesOrders
+ON SalesOrders
+AFTER UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @UserID INT;
+    SET @UserID = (SELECT UserID FROM Users WHERE SYSTEM_USER = Username AND Role = 'Admin');
+
+    IF @UserID IS NULL
+    BEGIN
+        RAISERROR ('Only Admin users can perform updates or deletions on SalesOrders.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+
+    IF EXISTS (SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'UPDATE',
+            'SalesOrders',
+            GETDATE(),
+            CONCAT('Updated SalesOrderID: ', d.SalesOrderID)
+        FROM deleted d;
+    END
+
+    IF EXISTS (SELECT * FROM deleted) AND NOT EXISTS (SELECT * FROM inserted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'DELETE',
+            'SalesOrders',
+            GETDATE(),
+            CONCAT('Deleted SalesOrderID: ', d.SalesOrderID)
+        FROM deleted d;
+    END
+END;
+
+CREATE TRIGGER trg_Audit_SalesOrderDetails
+ON SalesOrderDetails
+AFTER UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @UserID INT;
+    SET @UserID = (SELECT UserID FROM Users WHERE SYSTEM_USER = Username AND Role = 'Admin');
+
+    IF @UserID IS NULL
+    BEGIN
+        RAISERROR ('Only Admin users can perform updates or deletions on SalesOrderDetails.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+
+    IF EXISTS (SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'UPDATE',
+            'SalesOrderDetails',
+            GETDATE(),
+            CONCAT('Updated SODetailID: ', d.SODetailID)
+        FROM deleted d;
+    END
+
+    IF EXISTS (SELECT * FROM deleted) AND NOT EXISTS (SELECT * FROM inserted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'DELETE',
+            'SalesOrderDetails',
+            GETDATE(),
+            CONCAT('Deleted SODetailID: ', d.SODetailID)
+        FROM deleted d;
+    END
+END;
+
+ALTER TRIGGER trg_Audit_Suppliers
+ON Suppliers
+AFTER UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @UserID INT;
+    SET @UserID = 1; 
+
+    IF EXISTS (SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'UPDATE',
+            'Suppliers',
+            GETDATE(),
+            CONCAT('Updated SupplierID: ', d.SupplierID)
+        FROM deleted d;
+    END
+
+    IF EXISTS (SELECT * FROM deleted) AND NOT EXISTS (SELECT * FROM inserted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'DELETE',
+            'Suppliers',
+            GETDATE(),
+            CONCAT('Deleted SupplierID: ', d.SupplierID)
+        FROM deleted d;
+    END
+END;
+
+ALTER TRIGGER trg_Audit_Products
+ON Products
+AFTER UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @UserID INT;
+    SET @UserID = 1; 
+
+    IF EXISTS (SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'UPDATE',
+            'Products',
+            GETDATE(),
+            CONCAT('Updated ProductID: ', d.ProductID)
+        FROM deleted d;
+    END
+
+    IF EXISTS (SELECT * FROM deleted) AND NOT EXISTS (SELECT * FROM inserted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'DELETE',
+            'Products',
+            GETDATE(),
+            CONCAT('Deleted ProductID: ', d.ProductID)
+        FROM deleted d;
+    END
+END;
+
+DECLARE @UserID INT;
+SET @UserID = 1; 
+
+INSERT INTO Products (Name, SKU, CategoryName, Quantity, UnitPrice, Barcode) VALUES 
+('Wireless Mouse', 'WM-001', 'Electronics', 50, 25.99, '1234567890123'),
+('Men’s T-Shirt', 'TS-002', 'Clothing', 100, 19.99, '1234567890124'),
+('Office Desk', 'OD-003', 'Furniture', 20, 199.99, '1234567890125'),
+('Children’s Puzzle', 'CP-004', 'Toys', 75, 15.00, '1234567890126'),
+('Bluetooth Headphones', 'BH-005', 'Electronics', 15, 89.99, '1234567890127'),
+('Bookshelf Organizer', 'BO-006', 'Furniture', 30, 120.00, '1234567890128'),
+('Women’s Jacket', 'JKT-007', 'Clothing', 40, 79.99, '1234567890129'),
+('Action Figure Toy Set', 'AFTS-008', 'Toys', 60, 29.99, '1234567890130'),
+('Smartphone Stand', 'SS-009', 'Electronics', 25, 19.99, '1234567890131');
+
+SELECT * FROM Users WHERE UserID = 1 AND Role = 'Admin';
+
+ALTER TRIGGER trg_Audit_Products
+ON Products
+AFTER UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @UserID INT;
+    SET @UserID = (SELECT TOP 1 UserID FROM Users WHERE Role = 'Admin');
+
+    IF @UserID IS NULL
+    BEGIN
+        RAISERROR ('Admin user not found. Cannot perform update or delete.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+
+    IF EXISTS (SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'UPDATE',
+            'Products',
+            GETDATE(),
+            CONCAT('Updated ProductID: ', d.ProductID)
+        FROM deleted d;
+    END
+
+    IF EXISTS (SELECT * FROM deleted) AND NOT EXISTS (SELECT * FROM inserted)
+    BEGIN
+        INSERT INTO AuditLogs (UserID, Action, TableAffected, ActionTime, Description)
+        SELECT 
+            @UserID,
+            'DELETE',
+            'Products',
+            GETDATE(),
+            CONCAT('Deleted ProductID: ', d.ProductID)
+        FROM deleted d;
+    END
+END;
+
+INSERT INTO Suppliers (SupplierName, ContactName, Phone, Email, Address)
+VALUES ('ABC Supplies', 'John Smith', '1234567890', 'abc@supplies.com', '123 Main St');
+
+UPDATE Suppliers 
+SET ContactName = 'Jane Doe'
+WHERE SupplierID = 1;
+SELECT * FROM AuditLogs
+WHERE TableAffected = 'Suppliers'
+ORDER BY ActionTime DESC;
+
+SELECT 
+    A.LogID,
+    U.Username,
+    U.Role,
+    A.Action,
+    A.TableAffected,
+    A.ActionTime,
+    A.Description
+FROM 
+    AuditLogs A
+JOIN 
+    Users U ON A.UserID = U.UserID
+ORDER BY 
+    A.ActionTime DESC;
+
+SELECT 
+    po.PurchaseOrderID as purchase_order_id,
+    s.SupplierName as supplier_name,
+    po.OrderDate as purchase_order_date,
+    po.Status as purchase_order_status,
+    po.TotalAmount as purchase_total_amount,
+    NULL as sales_order_id,
+    NULL as customer_name,
+    NULL as sales_order_date,
+    NULL as sales_order_status,
+    NULL as sales_total_amount,
+    NULL as movement_id,
+    NULL as movement_type,
+    NULL as movement_quantity,
+    NULL as movement_date,
+    NULL as movement_description,
+    po.OrderDate as order_date 
+FROM 
+    PurchaseOrders po
+JOIN 
+    Suppliers s ON po.SupplierID = s.SupplierID
+
+UNION ALL
+
+SELECT 
+    NULL as purchase_order_id,
+    NULL as supplier_name,
+    NULL as purchase_order_date,
+    NULL as purchase_order_status,
+    NULL as purchase_total_amount,
+    so.SalesOrderID as sales_order_id,
+    so.CustomerName as customer_name,
+    so.OrderDate as sales_order_date,
+    so.Status as sales_order_status,
+    so.TotalAmount as sales_total_amount,
+    NULL as movement_id,
+    NULL as movement_type,
+    NULL as movement_quantity,
+    NULL as movement_date,
+    NULL as movement_description,
+    so.OrderDate as order_date 
+FROM 
+    SalesOrders so
+
+UNION ALL
+
+SELECT 
+    NULL as purchase_order_id,
+    NULL as supplier_name,
+    NULL as purchase_order_date,
+    NULL as purchase_order_status,
+    NULL as purchase_total_amount,
+    NULL as sales_order_id,
+    NULL as customer_name,
+    NULL as sales_order_date,
+    NULL as sales_order_status,
+    NULL as sales_total_amount,
+    sm.MovementID as movement_id,
+    sm.MovementType as movement_type,
+    sm.Quantity as movement_quantity,
+    sm.MovementDate as movement_date,
+    sm.Description as movement_description,
+    sm.MovementDate as order_date
+FROM 
+    StockMovements sm
+
+ORDER BY 
+    order_date DESC;
