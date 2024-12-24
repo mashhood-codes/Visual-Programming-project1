@@ -1,0 +1,136 @@
+{
+  "rows": [
+    [
+      "7",
+      "Test Product",
+      "SKU12345",
+      "Electronics",
+      null,
+      null,
+      "1234567890",
+      null,
+      null
+    ],
+    [
+      "33",
+      "Wireless Mouse",
+      "WM-001",
+      "Electronics",
+      null,
+      null,
+      "1234567890123",
+      null,
+      null
+    ],
+    [
+      "34",
+      "Men’s T-Shirt",
+      "TS-002",
+      "Clothing",
+      null,
+      null,
+      "1234567890124",
+      null,
+      null
+    ],
+    [
+      "35",
+      "Office Desk",
+      "OD-003",
+      "Furniture",
+      null,
+      null,
+      "1234567890125",
+      null,
+      null
+    ],
+    [
+      "36",
+      "Children’s Puzzle",
+      "CP-004",
+      "Toys",
+      null,
+      null,
+      "1234567890126",
+      null,
+      null
+    ],
+    [
+      "37",
+      "Bluetooth Headphones",
+      "BH-005",
+      "Electronics",
+      null,
+      null,
+      "1234567890127",
+      null,
+      null
+    ],
+    [
+      "38",
+      "Bookshelf Organizer",
+      "BO-006",
+      "Furniture",
+      null,
+      null,
+      "1234567890128",
+      null,
+      null
+    ],
+    [
+      "39",
+      "Women’s Jacket",
+      "JKT-007",
+      "Clothing",
+      null,
+      null,
+      "1234567890129",
+      null,
+      null
+    ],
+    [
+      "40",
+      "Action Figure Toy Set",
+      "AFTS-008",
+      "Toys",
+      null,
+      null,
+      "1234567890130",
+      null,
+      null
+    ],
+    [
+      "41",
+      "Smartphone Stand",
+      "SS-009",
+      "Electronics",
+      null,
+      null,
+      "1234567890131",
+      null,
+      null
+    ],
+    [
+      "42",
+      "ewrert",
+      "sku124143",
+      "Electronics",
+      null,
+      null,
+      "23423243",
+      null,
+      null
+    ]
+  ],
+  "columns": [
+    "ProductID",
+    "Name",
+    "SKU",
+    "CategoryName",
+    "Quantity",
+    "UnitPrice",
+    "Barcode",
+    "CreatedAt",
+    "UpdatedAt"
+  ]
+}
