@@ -1,0 +1,244 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="frontend.Dashboard"
+        Title="Inventory Management Dashboard" 
+        Height="650" 
+        Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="#F0F3F7">
+    <Grid x:Name="Products">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" 
+                Background="#FFFFFF" 
+                BorderBrush="#E0E0E0" 
+                BorderThickness="0,0,0,1"
+                Padding="20,15">
+            <TextBox x:Name="roletextbox" TextWrapping="Wrap" Text="TextBox" HorizontalAlignment="Left" Width="140" Margin="992,-5,0,16" FontSize="14" FontWeight="Bold" IsReadOnly="True"/>
+        </Border>
+
+        <DataGrid x:Name="Products_gird" 
+                  Grid.Row="1"
+                  Margin="506,18,50,21"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserResizeColumns="True"
+                  GridLinesVisibility="Horizontal"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  AlternatingRowBackground="#F5F5F5"
+                  RowBackground="White"
+                  BorderThickness="1"
+                  BorderBrush="#DDDDDD" SelectionChanged="Products_gird_SelectionChanged" Visibility="Hidden">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Product ID" Binding="{Binding ProductID}" Width="Auto"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                <DataGridTextColumn Header="SKU" Binding="{Binding SKU}" Width="Auto"/>
+                <DataGridTextColumn Header="Category" Binding="{Binding CategoryName}" Width="Auto"/>
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="Auto"/>
+                <DataGridTextColumn Header="Unit Price" Binding="{Binding UnitPrice}" Width="Auto"/>
+                <DataGridTextColumn Header="Barcode" Binding="{Binding Barcode}" Width="Auto"/>
+                <DataGridTextColumn Header="Created At" Binding="{Binding CreatedAt}" Width="Auto"/>
+                <DataGridTextColumn Header="Updated At" Binding="{Binding UpdatedAt}" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid Grid.Row="2" Margin="20,10">
+            <Button x:Name="Log_out" 
+                    Content="Logout" 
+                    Click="Log_out_Click"
+                    Width="120"
+                    Height="35"
+                    HorizontalAlignment="Right"
+                    Background="#E74C3C" 
+                    Foreground="White"
+                    BorderThickness="0"
+                    FontWeight="SemiBold"/>
+        </Grid>
+        <Grid Grid.Row="1" Margin="20,0,913,0">
+            <Grid Margin="22,252,22,219">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="174*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="Icon" HorizontalAlignment="Left" Height="37" VerticalAlignment="Center" Width="52" Margin="10,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\order-processing.png" Grid.ColumnSpan="2"/>
+                <Button x:Name="ordermanagebutton" Content="  Order Management" HorizontalAlignment="Left" VerticalAlignment="Center" Width="203" Height="51" FontSize="14" FontWeight="Bold" Grid.ColumnSpan="2" Background="{x:Null}" Margin="10,0,0,0" FontFamily="Agency FB" Click="ordermanagebutton_Click"/>
+            </Grid>
+            <Grid x:Name="suppliermanagegird" Margin="22,173,22,290">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="174*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="suppliericon" HorizontalAlignment="Left" Height="38" VerticalAlignment="Center" Width="46" Margin="10,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\market.png" Grid.ColumnSpan="2"/>
+                <Button x:Name="suppliermanagebutton" Content="          Supplier Management&#xA;" HorizontalAlignment="Left" VerticalAlignment="Center" Width="203" Height="39" FontSize="14" FontWeight="Bold" Background="{x:Null}" Margin="10,0,0,0" Grid.ColumnSpan="2" FontFamily="Agency FB" Click="suppliermanagebutton_Click"/>
+            </Grid>
+            <Grid x:Name="productsmanagegird" Margin="22,96,22,366">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="174*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="productsicon" HorizontalAlignment="Left" Height="38" VerticalAlignment="Center" Width="46" Margin="10,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\add-to-cart.png" Grid.ColumnSpan="2"/>
+                <Button x:Name="productsbutton" Content="      Product Management" HorizontalAlignment="Left" VerticalAlignment="Center" Width="203" Height="59" FontSize="14" FontWeight="Bold" Background="{x:Null}" Margin="10,0,0,0" Grid.ColumnSpan="2" FontFamily="Agency FB" Click="productsbutton_Click"/>
+            </Grid>
+            <Grid x:Name="Dashboardgird" Margin="22,23,22,438" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="174*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="dashboardicon" HorizontalAlignment="Left" Height="38" VerticalAlignment="Center" Width="46" Margin="14,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\icondashboard.png" Grid.ColumnSpan="2"/>
+                <Button x:Name="dashboardbutton" Content="Dashboard" HorizontalAlignment="Left" VerticalAlignment="Center" Width="203" Height="59" FontSize="16" Background="{x:Null}" Margin="10,0,0,0" FontWeight="Bold" FontFamily="Bungee Inline" Grid.ColumnSpan="2" Click="dashboardbutton_Click_1"/>
+            </Grid>
+            <Grid x:Name="auditgird" Margin="22,337,22,134">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="174*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="auditicon" HorizontalAlignment="Left" Height="37" VerticalAlignment="Center" Width="52" Margin="10,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\log-file.png" Grid.ColumnSpan="2"/>
+                <Button x:Name="auditlogbutton" Content="Audit Logs" HorizontalAlignment="Left" VerticalAlignment="Center" Width="203" Height="51" FontSize="14" FontWeight="Bold" Background="{x:Null}" Margin="10,0,0,0" FontFamily="Agency FB" Grid.ColumnSpan="2" Click="auditlogbutton_Click"/>
+            </Grid>
+            <Grid x:Name="settings_gird" Margin="22,423,22,33">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="174*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="settingicon" HorizontalAlignment="Left" Height="37" VerticalAlignment="Center" Width="52" Margin="15,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\settings.png" Grid.ColumnSpan="2" RenderTransformOrigin="0.485,0.536"/>
+                <Button x:Name="settingsbutton" Content="Settings" HorizontalAlignment="Left" VerticalAlignment="Center" Width="203" Height="52" FontSize="14" FontWeight="Bold" Background="{x:Null}" FontFamily="Agency FB" Margin="10,0,0,0" Grid.ColumnSpan="2"/>
+            </Grid>
+        </Grid>
+        <Grid x:Name="Details_gird" Grid.Row="1" Margin="325,0,73,326" Background="White"  Visibility="Collapsed">
+            <Grid x:Name="totalProductBox" Margin="10,10,604,95" Background="Black">
+                <Label x:Name="TotalProductslabel" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" Width="101" Height="36" Content="Total Products" Foreground="White" FontWeight="Bold" FontSize="13" />
+                <Label x:Name="totalproductsnum" Content="{Binding totalProductsnum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="116,25,0,0" VerticalAlignment="Top" Width="57" FontSize="16" Height="35" Foreground="#FFFAFAFA" FontWeight="Bold"/>
+            </Grid>
+            <Grid x:Name="lowstockgird" Margin="244,10,370,95" Background="Black">
+                <Label x:Name="lowstocklabel" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" Width="110" Height="36" Content="Low Stock Alerts" FontWeight="Bold" Foreground="White"/>
+                <Label x:Name="lowstocknum" Content="{Binding lowstocknum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="111,25,0,0" VerticalAlignment="Top" Width="62" FontSize="16" Height="35" Foreground="White" FontWeight="Bold"/>
+            </Grid>
+            <Grid x:Name="totalsales" Margin="502,10,112,95" Background="Black">
+                <Label x:Name="totalsaleslabel" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" Width="101" Height="36" Content="Total Sales" Foreground="White" FontWeight="Bold" FontSize="16"/>
+                <Label x:Name="totalsalesnum" Content="{Binding totalSalesnum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="111,25,0,0" VerticalAlignment="Top" Width="62" FontSize="16" Height="35" Foreground="White" FontWeight="Bold"/>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="Crudgird" Grid.Row="1" Margin="312,0,0,21" HorizontalAlignment="Left" Width="174" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="83*"/>
+                <RowDefinition Height="91*"/>
+            </Grid.RowDefinitions>
+            <Grid Margin="18,10,18,188">
+                <Image x:Name="refreshicon" HorizontalAlignment="Left" Height="21" VerticalAlignment="Center" Width="21" Margin="40,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\refresh.png"/>
+                <Button x:Name="refreshbutton" Content="     Refresh" HorizontalAlignment="Left" Margin="40,0,0,0" VerticalAlignment="Center" Width="89" Height="21" Background="{x:Null}" FontSize="13" FontWeight="Bold" FontFamily="Cooper Black" Click="refreshbutton_click"/>
+            </Grid>
+            <Grid x:Name="creategird" Margin="18,155,18,43">
+                <Image x:Name="refreshicon1" HorizontalAlignment="Left" Height="41" VerticalAlignment="Center" Width="29" Margin="40,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\box.png"/>
+                <Button x:Name="createbutton" Content="    Create" HorizontalAlignment="Left" Margin="40,0,0,0" VerticalAlignment="Center" Width="89" Height="29" Background="{x:Null}" FontSize="13" FontWeight="Bold" FontFamily="Cooper Black" Click="createbutton_click"/>
+            </Grid>
+            <Grid x:Name="Updategird" Margin="18,214,18,245" Grid.RowSpan="2">
+                <Image x:Name="updateicon" HorizontalAlignment="Left" Height="21" VerticalAlignment="Center" Width="41" Margin="42,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\product-development.png"/>
+                <Button x:Name="updatebutton" Content="     Update" HorizontalAlignment="Left" VerticalAlignment="Center" Width="86" Height="29" Background="{x:Null}" FontSize="13" FontWeight="Bold" FontFamily="Cooper Black" Click="updatebutton_click" Margin="42,0,0,0"/>
+            </Grid>
+            <Grid x:Name="Searchgird" Margin="18,30,18,189" Grid.Row="1">
+                <Image x:Name="searchicon" HorizontalAlignment="Left" Height="21" VerticalAlignment="Center" Width="41" Margin="40,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\search.png"/>
+                <Button x:Name="searchbutton" Content="    Search" HorizontalAlignment="Left" VerticalAlignment="Center" Width="88" Height="29" Background="{x:Null}" FontSize="13" FontWeight="Bold" FontFamily="Cooper Black" Click="searchbutton_click" Margin="40,0,0,0"/>
+            </Grid>
+            <Grid x:Name="Altergird" Margin="18,88,18,130" Grid.Row="1">
+                <Image x:Name="deleteicon" HorizontalAlignment="Left" Height="21" VerticalAlignment="Center" Width="31" Margin="42,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\delete-product.png"/>
+                <Button x:Name="deletebutton" Content="   Delete" HorizontalAlignment="Left" VerticalAlignment="Center" Width="86" Height="29" Background="{x:Null}" FontSize="13" FontWeight="Bold" FontFamily="Cooper Black" Click="deletebutton_click" Margin="42,0,0,0"/>
+            </Grid>
+        </Grid>
+        <DataGrid x:Name="Suppliergird"
+          Grid.Row="1"
+          Margin="506,10,10,152"
+          AutoGenerateColumns="False"
+          CanUserAddRows="False"
+          CanUserDeleteRows="False"
+          CanUserResizeColumns="True"
+          GridLinesVisibility="Horizontal"
+          IsReadOnly="True"
+          SelectionMode="Single"
+          AlternatingRowBackground="#F5F5F5"
+          RowBackground="White"
+          BorderThickness="1"
+          BorderBrush="#DDDDDD"
+          SelectionChanged="Suppliergird_SelectionChanged"
+          Visibility="Collapsed">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="PO ID" Binding="{Binding PurchaseOrderID}" Width="Auto"/>
+                <DataGridTextColumn Header="Order Date" Binding="{Binding OrderDate}" Width="Auto"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
+                <DataGridTextColumn Header="Total Amount" Binding="{Binding TotalAmount}" Width="Auto"/>
+                <DataGridTextColumn Header="Supplier Name" Binding="{Binding SupplierName}" Width="Auto"/>
+                <DataGridTextColumn Header="Contact Name" Binding="{Binding ContactName}" Width="Auto"/>
+                <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" Width="Auto"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="100"/>
+                <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid x:Name="CrudgirdSupplier" Grid.Row="1" Margin="312,0,0,21" HorizontalAlignment="Left" Width="174" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="83*"/>
+                <RowDefinition Height="91*"/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="refreshgridsupp" Margin="18,10,18,188">
+                <Image x:Name="refreshicon2" HorizontalAlignment="Left" Height="21" VerticalAlignment="Center" Width="21" Margin="40,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\refresh.png"/>
+                <Button x:Name="refreshbuttonsupp" Content="     Refresh" HorizontalAlignment="Left" Margin="40,0,0,0" VerticalAlignment="Center" Width="89" Height="21" Background="{x:Null}" FontSize="13" FontWeight="Bold" FontFamily="Cooper Black" Click="refreshbutton_click"/>
+            </Grid>
+            <Grid x:Name="creategirdsupp" Margin="18,155,18,43">
+                <Image x:Name="refreshicon3" HorizontalAlignment="Left" Height="41" VerticalAlignment="Center" Width="29" Margin="40,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\box.png"/>
+                <Button x:Name="createbuttonsupp" Content="    Create" HorizontalAlignment="Left" Margin="40,0,0,0" VerticalAlignment="Center" Width="89" Height="29" Background="{x:Null}" FontSize="13" FontWeight="Bold" FontFamily="Cooper Black" Click="createbutton_click"/>
+            </Grid>
+            <Grid x:Name="Updategirdsupp" Margin="18,214,18,245" Grid.RowSpan="2">
+                <Image x:Name="updateicon1" HorizontalAlignment="Left" Height="21" VerticalAlignment="Center" Width="41" Margin="42,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\product-development.png"/>
+                <Button x:Name="updatebutton1" Content="     Update" HorizontalAlignment="Left" VerticalAlignment="Center" Width="86" Height="29" Background="{x:Null}" FontSize="13" FontWeight="Bold" FontFamily="Cooper Black" Click="updatebutton_click" Margin="42,0,0,0"/>
+            </Grid>
+            <Grid x:Name="Searchgirdsupp" Margin="18,30,18,189" Grid.Row="1">
+                <Image x:Name="searchicon1" HorizontalAlignment="Left" Height="21" VerticalAlignment="Center" Width="41" Margin="40,0,0,0" Source="D:\rusty\projects\apis\vp_backend\frontend\bg_images\search.png"/>
+                <Button x:Name="searchbutton1" Content="    Search" HorizontalAlignment="Left" VerticalAlignment="Center" Width="88" Height="29" Background="{x:Null}" FontSize="13" FontWeight="Bold" FontFamily="Cooper Black" Click="searchbutton_click" Margin="40,0,0,0"/>
+            </Grid>
+        </Grid>
+
+        <ListView x:Name="listlogs" Visibility="Collapsed"
+          Margin="292,1,5,248" Grid.Row="1" FontSize="14">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Log ID" DisplayMemberBinding="{Binding LogId}" Width="80"/>
+                    <GridViewColumn Header="Username" DisplayMemberBinding="{Binding Username}" Width="120"/>
+                    <GridViewColumn Header="Role" DisplayMemberBinding="{Binding Role}" Width="100"/>
+                    <GridViewColumn Header="Action" DisplayMemberBinding="{Binding Action}" Width="150"/>
+                    <GridViewColumn Header="Table Affected" DisplayMemberBinding="{Binding TableAffected}" Width="150"/>
+                    <GridViewColumn Header="Action Time" DisplayMemberBinding="{Binding ActionTime}" Width="180"/>
+                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" Width="200"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView x:Name="orderListView" Margin="292,19,10,40" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Purchase Order ID" DisplayMemberBinding="{Binding purchase_order_id}" />
+                    <GridViewColumn Header="Supplier Name" DisplayMemberBinding="{Binding supplier_name}" />
+                    <GridViewColumn Header="Purchase Order Date" DisplayMemberBinding="{Binding purchase_order_date}" />
+                    <GridViewColumn Header="Purchase Order Status" DisplayMemberBinding="{Binding purchase_order_status}" />
+                    <GridViewColumn Header="Total Amount" DisplayMemberBinding="{Binding purchase_total_amount}" />
+                    <GridViewColumn Header="Sales Order ID" DisplayMemberBinding="{Binding sales_order_id}" />
+                    <GridViewColumn Header="Customer Name" DisplayMemberBinding="{Binding customer_name}" />
+                    <GridViewColumn Header="Sales Order Date" DisplayMemberBinding="{Binding sales_order_date}" />
+                    <GridViewColumn Header="Sales Order Status" DisplayMemberBinding="{Binding sales_order_status}" />
+                    <GridViewColumn Header="Sales Total Amount" DisplayMemberBinding="{Binding sales_total_amount}" />
+                    <GridViewColumn Header="Movement ID" DisplayMemberBinding="{Binding movement_id}" />
+                    <GridViewColumn Header="Movement Type" DisplayMemberBinding="{Binding movement_type}" />
+                    <GridViewColumn Header="Movement Quantity" DisplayMemberBinding="{Binding movement_quantity}" />
+                    <GridViewColumn Header="Movement Date" DisplayMemberBinding="{Binding movement_date}" />
+                    <GridViewColumn Header="Movement Description" DisplayMemberBinding="{Binding movement_description}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>

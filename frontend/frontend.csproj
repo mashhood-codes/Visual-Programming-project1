@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="2106257.png" />
+    <None Remove="2982370.png" />
+    <None Remove="icondashboard.png" />
+    <None Remove="wallpaperflare.com_wallpaper%283%29.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="bg_images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="2106257.png" />
+    <Resource Include="2982370.png" />
+    <Resource Include="icondashboard.png" />
+    <Resource Include="wallpaperflare.com_wallpaper(3).jpg" />
+  </ItemGroup>
+
+</Project>
